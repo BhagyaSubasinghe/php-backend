@@ -23,6 +23,19 @@ class ProductController
         ];
     }
 
+    // Get products by category
+    public function getProductsByCategory($category)
+    {
+        $products = $this->product->getByCategory($category);
+
+        return [
+            "success" => true,
+            "category" => $category,
+            "count" => count($products),
+            "data" => $products
+        ];
+    }
+
     // Get product by ID
     public function getProduct($id)
     {

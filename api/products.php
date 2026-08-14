@@ -13,24 +13,53 @@ require_once __DIR__ . "/../controllers/ProductController.php";
 
 $productController = new ProductController($conn);
 
-// Check if an ID was requested
+/*
+|--------------------------------------------------------------------------
+| Product API
+|--------------------------------------------------------------------------
+|
+| Get all products:
+| products.php
+|
+| Get product by ID:
+| products.php?id=1
+|
+| Get products by category:
+| products.php?category=Men
+|
+*/
+
+// Get product by ID
 if (isset($_GET["id"])) {
 
     $id = $_GET["id"];
 
     $response = $productController->getProduct($id);
 
+// Get products by category
+} elseif (isset($_GET["category"])) {
+
+    $category = trim($_GET["category"]);
+
+    if ($category === "") {
+
+        $response = [
+            "success" => false,
+            "message" => "Category cannot be empty"
+        ];
+
+    } else {
+
+        $response = $productController->getProductsByCategory($category);
+    }
+
+// Get all products
 } else {
 
     $response = $productController->getProducts();
-
 }
 
-// Return JSON
 echo json_encode($response, JSON_PRETTY_PRINT);
-
-
-
 
 
 
