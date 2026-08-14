@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET");
@@ -25,5 +28,11 @@ if (isset($_GET["id"])) {
 
 // Return JSON
 echo json_encode($response, JSON_PRETTY_PRINT);
+
+
+
+
+
+
 
 ?>
