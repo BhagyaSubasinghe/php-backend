@@ -1,25 +1,28 @@
 <?php
+// backend/config/db.php
 
-// Database configuration
-$host = "localhost";
-$username = "root";
-$password = "";
-$database = "nadiyas_clothing";
+class Database {
+    private $host = "localhost";
+    private $port = "5432"; // PostgreSQL Default Port
+    private $db_name = "nadiyas_db";
+    private $username = "postgres"; // Default PostgreSQL user
+    private $password = "your_password"; // PostgreSQL මුරපදය මෙතැනට දෙන්න
+    public $conn;
 
-// Create MySQL connection
-$conn = new mysqli(
-    $host,
-    $username,
-    $password,
-    $database
-);
+    public function getConnection() {
+        $this->conn = null;
 
-// Check connection
-if ($conn->connect_error) {
-    die("Database connection failed: " . $conn->connect_error);
+        try {
+            // PostgreSQL සඳහා DSN (Data Source Name)
+            $dsn = "pgsql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->db_name;
+            $this->conn = new PDO($dsn, $this->username, $this->password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $exception) {
+            echo json_encode(["status" => "error", "message" => "Connection error: " . $exception->getMessage()]);
+            exit();
+        }
+
+        return $this->conn;
+    }
 }
-
-// Set character encoding
-$conn->set_charset("utf8mb4");
-
 ?>
