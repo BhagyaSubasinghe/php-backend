@@ -1,15 +1,31 @@
 <?php
-// backend/api/products.php
-
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json; charset=UTF-8");
 
-require_once __DIR__ . '/../controllers/ProductController.php';
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
-$category = isset($_GET['category']) ? $_GET['category'] : 'All';
+require_once __DIR__ . '/../config/database.php';
 
-$controller = new ProductController();
-$response = $controller->fetchProducts($category);
+$db = isset($pdo) ? $pdo : (isset($conn) ? $conn : null);
 
-echo json_encode($response);
+if (!$db) {
+    echo json_encode(["success" => false, "message" => "Database connection missing"]);
+    exit();
+}
+
+try {
+        "success" => true,
+        "data" => $products
+    ]);
+} catch (PDOException $e) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Database Error: " . $e->getMessage()
+    ]);
+}
 ?>
