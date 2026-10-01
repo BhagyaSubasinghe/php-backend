@@ -105,6 +105,10 @@ try {
         $product["price"] =
             (float) $product["price"];
 
+        if ($product["image"] === "images/men/m3.jpg") {
+            $product["image"] = "images/men/mens3.jpg";
+        }
+
     }
 
 

@@ -14,7 +14,7 @@ $password = "Nadeesha@98";
 try {
 
     $pdo = new PDO(
-        "pgsql:host=$host;port=$port;dbname=$dbname",
+        "pgsql:host=$host;port=$port;dbname='$dbname'",
         $username,
         $password
     );

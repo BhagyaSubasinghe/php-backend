@@ -109,9 +109,27 @@ try {
 
     foreach ($items as $item) {
 
+        if (
+            !isset(
+                $item["productId"],
+                $item["name"],
+                $item["size"],
+                $item["price"],
+                $item["quantity"]
+            ) ||
+            !is_numeric($item["productId"]) ||
+            !is_numeric($item["price"]) ||
+            !is_numeric($item["quantity"]) ||
+            (int) $item["quantity"] < 1 ||
+            (float) $item["price"] < 0 ||
+            trim($item["size"]) === ""
+        ) {
+            throw new Exception("Invalid order item.");
+        }
+
         $subtotal +=
-            $item["price"] *
-            $item["quantity"];
+            (float) $item["price"] *
+            (int) $item["quantity"];
 
     }
 
